@@ -9,15 +9,61 @@
       background: #111;
       color: white;
       font-family: sans-serif;
+
+      display: flex;
+      justify-content: center;
+      margin: 0;
     }
 
+    .container {
+      max-width: 600px;
+      width: 100%;
+      padding: 20px;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+    }
+
+    /* 入力欄 */
+    #players {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    #players input {
+      padding: 8px;
+      border-radius: 6px;
+      border: none;
+    }
+
+    /* ボタン */
+    button {
+      margin: 5px;
+      padding: 10px 15px;
+      border-radius: 8px;
+      border: none;
+      background: #7c3aed;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #9333ea;
+    }
+
+    /* 結果表示 */
     #result {
       display: grid;
-      grid-template-columns: repeat(4, 120px);
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
       gap: 20px;
       margin-top: 20px;
       list-style: none;
       padding: 0;
+      justify-items: center;
     }
 
     .perk-card {
@@ -25,7 +71,6 @@
       text-align: center;
     }
 
-    /* 👇 ここから変更 */
     .perk {
       position: relative;
       width: 120px;
@@ -39,12 +84,10 @@
       top: 0;
       left: 0;
 
-      /* 🔥 画像背景に変更 */
       background-image: url("dbd_perks/background.png");
       background-size: cover;
       background-position: center;
 
-      /* ちょい光らせる */
       filter: drop-shadow(0 0 8px #a855f7);
     }
 
@@ -52,7 +95,7 @@
       position: absolute;
       top: 50%;
       left: 50%;
-      width: 85%;   /* ← ここがポイント */
+      width: 85%;
       height: 85%;
       object-fit: contain;
       transform: translate(-50%, -50%);
@@ -63,26 +106,43 @@
       margin-top: 8px;
       font-size: 12px;
     }
+
+    /* サバイバー表示用 */
+    .player-block {
+      grid-column: span 4;
+      margin-bottom: 20px;
+    }
+
+    .player-perks {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
   </style>
 </head>
 
 <body>
 
-  <h1>DbD パークランダム</h1>
-  
-  <h2>サバイバー名入力（最大4人）</h2>
+  <div class="container">
 
-  <div id="players">
-    <input type="text" placeholder="プレイヤー1">
-    <input type="text" placeholder="プレイヤー2">
-    <input type="text" placeholder="プレイヤー3">
-    <input type="text" placeholder="プレイヤー4">
+    <h1>DbD パークランダム</h1>
+
+    <h2>サバイバー名入力（最大4人）</h2>
+
+    <div id="players">
+      <input type="text" placeholder="プレイヤー1">
+      <input type="text" placeholder="プレイヤー2">
+      <input type="text" placeholder="プレイヤー3">
+      <input type="text" placeholder="プレイヤー4">
+    </div>
+
+    <button onclick="roll('survivor')">サバイバー抽選</button>
+    <button onclick="roll('killer')">キラー抽選</button>
+
+    <ul id="result"></ul>
+
   </div>
-
-  <button onclick="roll('survivor')">サバイバー抽選</button>
-  <button onclick="roll('killer')">キラー抽選</button>
-
-  <ul id="result"></ul>
 
   <script type="module" src="./script.js"></script>
 
