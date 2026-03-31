@@ -23,8 +23,13 @@ window.onload = async () => {
 };
 
 window.roll = function(type) {
-  const list = allPerks.filter(p => p.type === type);
+  if (type === "survivor") {
+    rollSurvivors();
+    return;
+  }
 
+  // キラーは今まで通り
+  const list = allPerks.filter(p => p.type === type);
   const shuffled = [...list].sort(() => 0.5 - Math.random());
   const selected = shuffled.slice(0, 4);
 
