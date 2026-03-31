@@ -32,6 +32,30 @@ window.roll = function(type) {
   const list = allPerks.filter(p => p.type === type);
   const shuffled = [...list].sort(() => 0.5 - Math.random());
   const selected = shuffled.slice(0, 4);
+  function rollSurvivors() {
+  const inputs = document.querySelectorAll("#players input");
+
+  const names = [...inputs]
+    .map(input => input.value.trim())
+    .filter(name => name !== "");
+
+  if (names.length === 0) {
+    alert("名前を1人以上入力してね");
+    return;
+  }
+
+  const list = allPerks.filter(p => p.type === "survivor");
+
+  const result = names.map(name => {
+    const shuffled = [...list].sort(() => 0.5 - Math.random());
+    return {
+      name,
+      perks: shuffled.slice(0, 4)
+    };
+  });
+
+  displaySurvivors(result);
+}
 
   display(selected);
 };
