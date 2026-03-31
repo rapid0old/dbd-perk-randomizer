@@ -35,16 +35,23 @@ function display(perks) {
   const ul = document.getElementById("result");
 
   ul.innerHTML = perks.map(p => `
-    <li>
-      <div class="perk-card">
+    <li class="perk-card">
+      
+      <div class="perk">
+        <!-- 背景画像 -->
         <div class="perk-bg"></div>
+
+        <!-- パーク画像 -->
         <img 
           src="${p.image}" 
           class="perk-img"
           onerror="this.src='https://via.placeholder.com/64?text=No+Image'"
         >
       </div>
+
+      <!-- 名前 -->
       <div class="perk-name">${p.name}</div>
+
     </li>
   `).join("");
 }
