@@ -1,3 +1,4 @@
+// ① CSV読み込み（そのまま）
 async function loadCSV() {
   const res = await fetch('./perks.csv');
   const text = await res.text();
@@ -22,17 +23,45 @@ window.onload = async () => {
   allPerks = await loadCSV();
 };
 
+
+
+// ② rollを改造（ここ重要）
 window.roll = function(type) {
+
   if (type === "survivor") {
-    rollSurvivors();
+    rollSurvivors();   // ← ここ追加
     return;
   }
 
-  // キラーは今まで通り
   const list = allPerks.filter(p => p.type === type);
   const shuffled = [...list].sort(() => 0.5 - Math.random());
   const selected = shuffled.slice(0, 4);
-  function rollSurvivors() {
+
+  display(selected);
+};
+
+
+
+// ③ 通常表示（キラー用）
+function display(perks) {
+  const ul = document.getElementById("result");
+
+  ul.innerHTML = perks.map(p => `
+    <li class="perk-card">
+      <div class="perk">
+        <div class="perk-bg"></div>
+        <img src="${p.image}" class="perk-img">
+      </div>
+      <div class="perk-name">${p.name}</div>
+    </li>
+  `).join("");
+}
+
+
+
+// ④ 👇 ここから追加（サバイバー用）
+
+function rollSurvivors() {
   const inputs = document.querySelectorAll("#players input");
 
   const names = [...inputs]
@@ -57,29 +86,28 @@ window.roll = function(type) {
   displaySurvivors(result);
 }
 
-  display(selected);
-};
 
-function display(perks) {
+
+// ⑤ 👇 これが「表示処理」
+function displaySurvivors(players) {
   const ul = document.getElementById("result");
 
-  ul.innerHTML = perks.map(p => `
-    <li class="perk-card">
+  ul.innerHTML = players.map(player => `
+    <li style="grid-column: span 4; margin-bottom: 20px;">
       
-      <div class="perk">
-        <!-- 背景画像 -->
-        <div class="perk-bg"></div>
+      <h3>${player.name}</h3>
 
-        <!-- パーク画像 -->
-        <img 
-          src="${p.image}" 
-          class="perk-img"
-          onerror="this.src='https://via.placeholder.com/64?text=No+Image'"
-        >
+      <div style="display: flex; gap: 20px;">
+        ${player.perks.map(p => `
+          <div class="perk-card">
+            <div class="perk">
+              <div class="perk-bg"></div>
+              <img src="${p.image}" class="perk-img">
+            </div>
+            <div class="perk-name">${p.name}</div>
+          </div>
+        `).join("")}
       </div>
-
-      <!-- 名前 -->
-      <div class="perk-name">${p.name}</div>
 
     </li>
   `).join("");
