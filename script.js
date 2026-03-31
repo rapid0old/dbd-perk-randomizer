@@ -35,13 +35,16 @@ function display(perks) {
   const ul = document.getElementById("result");
 
   ul.innerHTML = perks.map(p => `
-    <li style="display:flex;align-items:center;gap:10px;">
-      <img 
-        src="${p.image}" 
-        width="64"
-        onerror="this.src='https://via.placeholder.com/64?text=No+Image'"
-      >
-      <span>${p.name}</span>
+    <li>
+      <div class="perk-card">
+        <div class="perk-bg"></div>
+        <img 
+          src="${p.image}" 
+          class="perk-img"
+          onerror="this.src='https://via.placeholder.com/64?text=No+Image'"
+        >
+      </div>
+      <div class="perk-name">${p.name}</div>
     </li>
   `).join("");
 }
