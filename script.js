@@ -95,10 +95,10 @@ function displaySurvivors(players) {
   ul.innerHTML = players.map(player => `
     <li style="grid-column: span 4; margin-bottom: 20px;">
       
-      <h3>
-        ${player.name}
-        <button onclick="reroll('${player.name}')">再抽選</button>
-      </h3>
+    <h3 class="player-header">
+      <span class="player-name">${player.name}</span>
+      <button class="reroll-btn" onclick="reroll('${player.name}')">再抽選</button>
+    </h3>
 
       <div style="display: flex; gap: 20px;">
         ${player.perks.map(p => `
