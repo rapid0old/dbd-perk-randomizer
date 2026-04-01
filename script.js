@@ -18,6 +18,7 @@ async function loadCSV() {
 }
 
 let allPerks = [];
+let currentPlayers = [];
 
 window.onload = async () => {
   allPerks = await loadCSV();
@@ -69,13 +70,13 @@ function rollSurvivors() {
     .filter(name => name !== "");
 
   if (names.length === 0) {
-    alert("名前を1人以上入力おくれ");
+    alert("名前を1人以上入力してね");
     return;
   }
 
   const list = allPerks.filter(p => p.type === "survivor");
 
-  const result = names.map(name => {
+  currentPlayers = names.map(name => {
     const shuffled = [...list].sort(() => 0.5 - Math.random());
     return {
       name,
@@ -83,7 +84,7 @@ function rollSurvivors() {
     };
   });
 
-  displaySurvivors(result);
+  displaySurvivors(currentPlayers);
 }
 
 
@@ -118,18 +119,31 @@ function displaySurvivors(players) {
 
 function copyBuild() {
   const text = document.getElementById("result").innerText;
-  navigator.clipboard.writeText(text);
+
+  try {
+    navigator.clipboard.writeText(text);
+    alert("コピーしました！");
+  } catch (e) {
+    // フォールバック（古いブラウザ）
+    const textarea = document.createElement("textarea");
+    textarea.value = text;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand("copy");
+    document.body.removeChild(textarea);
+
+    alert("コピーしました！");
+  }
 }
 
 function reroll(name) {
   const list = allPerks.filter(p => p.type === "survivor");
   const shuffled = [...list].sort(() => 0.5 - Math.random());
 
-  const newPerks = shuffled.slice(0, 4);
+  const player = currentPlayers.find(p => p.name === name);
+  if (!player) return;
 
-  // 再描画用（簡易版）
-  displaySurvivors([{
-    name,
-    perks: newPerks
-  }]);
+  player.perks = shuffled.slice(0, 4);
+
+  displaySurvivors(currentPlayers);
 }
