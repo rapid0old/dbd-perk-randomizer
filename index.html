@@ -72,14 +72,14 @@
     }
 
     .perk-card {
-      width: 120px;
+      width: 140px;  /* ← 120 → 140に拡大 */
       text-align: center;
     }
 
     .perk {
       position: relative;
-      width: 120px;
-      height: 120px;
+      width: 140px;   /* ← ここも合わせる */
+      height: 140px;
     }
 
     .perk-bg {
@@ -100,8 +100,8 @@
       position: absolute;
       top: 50%;
       left: 50%;
-      width: 85%;
-      height: 85%;
+      width: 90%;
+      height: 90%;
       object-fit: contain;
       transform: translate(-50%, -50%);
       z-index: 2;
@@ -111,6 +111,14 @@
       margin-top: 8px;
       font-size: 14px;   /* ← 少し大きく */
       font-weight: bold; /* ← 見やすく */
+    }
+
+    .perk {
+      transition: 0.2s;
+    }
+    
+    .perk:hover {
+      transform: scale(1.1);
     }
 
     /* サバイバー表示用 */
@@ -129,7 +137,9 @@
     .player-header {
       position: relative;
       text-align: center;
-      margin-bottom: 10px;
+    
+      margin-bottom: 20px;  /* ← ここを増やす */
+      margin-top: 10px;     /* ← これ追加で上にも余裕 */
     }
     
     .player-name {
@@ -145,6 +155,17 @@
       
       padding: 5px 10px;
       font-size: 12px;
+    }
+
+    @media (max-width: 600px) {
+      .perk-card {
+        width: 110px;
+      }
+    
+      .perk {
+        width: 110px;
+        height: 110px;
+      }
     }
     
   </style>
