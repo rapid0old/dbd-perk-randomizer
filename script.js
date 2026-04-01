@@ -112,3 +112,8 @@ function displaySurvivors(players) {
     </li>
   `).join("");
 }
+
+function copyBuild() {
+  const text = document.getElementById("result").innerText;
+  navigator.clipboard.writeText(text);
+}
