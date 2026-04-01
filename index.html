@@ -69,12 +69,9 @@
 
     /* 押した瞬間（ここが重要🔥） */
     button:active {
-      transform: translateY(4px);      /* ↓ 押し込む */
-      box-shadow: 0 0 0 #5b21b6;       /* 影消す */
-    }
-
-    button:active {
-      transform: translateY(4px) scale(0.97);
+      transform: translateY(2px) scale(0.98);
+      box-shadow: 0 2px 0 #5b21b6;
+      transition: 0.05s; /* ← 押した瞬間の気持ちよさUP */
     }
 
     /* 結果表示 */
