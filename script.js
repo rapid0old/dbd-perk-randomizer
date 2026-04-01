@@ -117,24 +117,24 @@ function displaySurvivors(players) {
   `).join("");
 }
 
-function copyBuild() {
-  const text = document.getElementById("result").innerText;
+window.copyBuild = function() {
+  if (currentPlayers.length === 0) return;
 
-  try {
-    navigator.clipboard.writeText(text);
-    alert("コピーしました！");
-  } catch (e) {
-    // フォールバック（古いブラウザ）
-    const textarea = document.createElement("textarea");
-    textarea.value = text;
-    document.body.appendChild(textarea);
-    textarea.select();
-    document.execCommand("copy");
-    document.body.removeChild(textarea);
+  let text = "";
 
-    alert("コピーしました！");
-  }
-}
+  currentPlayers.forEach(player => {
+    text += player.name + "\n";
+
+    player.perks.forEach(p => {
+      text += "・" + p.name + "\n";
+    });
+
+    text += "\n";
+  });
+
+  navigator.clipboard.writeText(text);
+  alert("コピーしました！");
+};
 
 function reroll(name) {
   const list = allPerks.filter(p => p.type === "survivor");
