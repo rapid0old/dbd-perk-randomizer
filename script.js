@@ -136,10 +136,12 @@ window.copyBuild = function() {
   if (currentMode === "survivor") {
     currentPlayers.forEach(player => {
       text += player.name + "\n";
+
       player.perks.forEach(p => {
         text += "・" + p.name + "\n";
       });
-      text += "\n";
+
+      text += "\n\n";
     });
 
   } else if (currentMode === "killer") {
@@ -153,6 +155,8 @@ window.copyBuild = function() {
     alert("先に抽選してね");
     return;
   }
+
+  text = text.trim();  // ← ★ここに入れる
 
   navigator.clipboard.writeText(text);
   alert("コピーしました！");
