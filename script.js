@@ -69,7 +69,7 @@ function rollSurvivors() {
     .filter(name => name !== "");
 
   if (names.length === 0) {
-    alert("名前を1人以上入力してね");
+    alert("名前を1人以上入力おくれ");
     return;
   }
 
