@@ -95,7 +95,10 @@ function displaySurvivors(players) {
   ul.innerHTML = players.map(player => `
     <li style="grid-column: span 4; margin-bottom: 20px;">
       
-      <h3>${player.name}</h3>
+      <h3>
+        ${player.name}
+        <button onclick="reroll('${player.name}')">再抽選</button>
+      </h3>
 
       <div style="display: flex; gap: 20px;">
         ${player.perks.map(p => `
@@ -116,4 +119,17 @@ function displaySurvivors(players) {
 function copyBuild() {
   const text = document.getElementById("result").innerText;
   navigator.clipboard.writeText(text);
+}
+
+function reroll(name) {
+  const list = allPerks.filter(p => p.type === "survivor");
+  const shuffled = [...list].sort(() => 0.5 - Math.random());
+
+  const newPerks = shuffled.slice(0, 4);
+
+  // 再描画用（簡易版）
+  displaySurvivors([{
+    name,
+    perks: newPerks
+  }]);
 }
