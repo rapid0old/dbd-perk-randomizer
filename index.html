@@ -74,10 +74,10 @@
       box-shadow: 0 2px 0 #5b21b6;
     }
     
-    /* 再抽選は弱め */
+    /* 再抽選（軽くする） */
     .reroll-btn:active {
-      transform: translateY(1px) scale(0.99);
-      box-shadow: 0 1px 0 #5b21b6;
+      transform: translateY(1px);   /* ← scale削除 */
+      box-shadow: 0 3px 0 #5b21b6;  /* ← ほぼ元の影 */
     }
 
     /* 結果表示 */
