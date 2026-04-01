@@ -141,7 +141,7 @@ window.copyBuild = function() {
         text += "・" + p.name + "\n";
       });
 
-      text += "\n\n";
+      text += "\n";
     });
 
   } else if (currentMode === "killer") {
