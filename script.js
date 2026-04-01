@@ -1,4 +1,4 @@
-// ① CSV読み込み（そのまま）
+// ① CSV読み込み
 async function loadCSV() {
   const res = await fetch('./perks.csv');
   const text = await res.text();
@@ -18,7 +18,11 @@ async function loadCSV() {
 }
 
 let allPerks = [];
+
+// 状態管理
 let currentPlayers = [];
+let currentKillerPerks = [];
+let currentMode = ""; // "survivor" or "killer"
 
 window.onload = async () => {
   allPerks = await loadCSV();
@@ -26,24 +30,28 @@ window.onload = async () => {
 
 
 
-// ② rollを改造（ここ重要）
+// ② 抽選
 window.roll = function(type) {
 
   if (type === "survivor") {
-    rollSurvivors();   // ← ここ追加
+    rollSurvivors();
     return;
   }
 
+  // キラー
   const list = allPerks.filter(p => p.type === type);
   const shuffled = [...list].sort(() => 0.5 - Math.random());
   const selected = shuffled.slice(0, 4);
+
+  currentMode = "killer";
+  currentKillerPerks = selected;
 
   display(selected);
 };
 
 
 
-// ③ 通常表示（キラー用）
+// ③ キラー表示
 function display(perks) {
   const ul = document.getElementById("result");
 
@@ -60,8 +68,7 @@ function display(perks) {
 
 
 
-// ④ 👇 ここから追加（サバイバー用）
-
+// ④ サバイバー抽選
 function rollSurvivors() {
   const inputs = document.querySelectorAll("#players input");
 
@@ -76,6 +83,8 @@ function rollSurvivors() {
 
   const list = allPerks.filter(p => p.type === "survivor");
 
+  currentMode = "survivor";
+
   currentPlayers = names.map(name => {
     const shuffled = [...list].sort(() => 0.5 - Math.random());
     return {
@@ -89,17 +98,17 @@ function rollSurvivors() {
 
 
 
-// ⑤ 👇 これが「表示処理」
+// ⑤ サバイバー表示（indexで管理）
 function displaySurvivors(players) {
   const ul = document.getElementById("result");
 
-  ul.innerHTML = players.map(player => `
+  ul.innerHTML = players.map((player, index) => `
     <li style="grid-column: span 4; margin-bottom: 20px;">
       
-    <h3 class="player-header">
-      <span class="player-name">${player.name}</span>
-      <button class="reroll-btn" onclick="reroll('${player.name}')">再抽選</button>
-    </h3>
+      <h3 class="player-header">
+        <span class="player-name">${player.name}</span>
+        <button class="reroll-btn" onclick="reroll(${index})">再抽選</button>
+      </h3>
 
       <div style="display: flex; gap: 20px;">
         ${player.perks.map(p => `
@@ -117,33 +126,48 @@ function displaySurvivors(players) {
   `).join("");
 }
 
+
+
+// ⑥ コピー（モード分岐）
 window.copyBuild = function() {
-  if (currentPlayers.length === 0) return;
 
   let text = "";
 
-  currentPlayers.forEach(player => {
-    text += player.name + "\n";
-
-    player.perks.forEach(p => {
-      text += "・" + p.name + "\n";
+  if (currentMode === "survivor") {
+    currentPlayers.forEach(player => {
+      text += player.name + "\n";
+      player.perks.forEach(p => {
+        text += "・" + p.name + "\n";
+      });
+      text += "\n";
     });
 
-    text += "\n";
-  });
+  } else if (currentMode === "killer") {
+    text += "キラー構成\n";
+    currentKillerPerks.forEach(p => {
+      text += "・" + p.name + "\n";
+    });
+  }
+
+  if (text === "") {
+    alert("先に抽選してね");
+    return;
+  }
 
   navigator.clipboard.writeText(text);
   alert("コピーしました！");
 };
 
-function reroll(name) {
+
+
+// ⑦ 再抽選（indexで確実に）
+window.reroll = function(index) {
   const list = allPerks.filter(p => p.type === "survivor");
   const shuffled = [...list].sort(() => 0.5 - Math.random());
 
-  const player = currentPlayers.find(p => p.name === name);
-  if (!player) return;
+  if (!currentPlayers[index]) return;
 
-  player.perks = shuffled.slice(0, 4);
+  currentPlayers[index].perks = shuffled.slice(0, 4);
 
   displaySurvivors(currentPlayers);
-}
+};
