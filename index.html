@@ -54,10 +54,27 @@
       background: #7c3aed;
       color: white;
       cursor: pointer;
+    
+      /* アニメーション */
+      transition: all 0.1s ease;
+    
+      /* 立体感 */
+      box-shadow: 0 4px 0 #5b21b6;
     }
-
+    
+    /* ホバー（マウス乗せ） */
     button:hover {
       background: #9333ea;
+    }
+
+    /* 押した瞬間（ここが重要🔥） */
+    button:active {
+      transform: translateY(4px);      /* ↓ 押し込む */
+      box-shadow: 0 0 0 #5b21b6;       /* 影消す */
+    }
+
+    button:active {
+      transform: translateY(4px) scale(0.97);
     }
 
     /* 結果表示 */
