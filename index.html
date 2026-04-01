@@ -68,10 +68,16 @@
     }
 
     /* 押した瞬間（ここが重要🔥） */
+    /* 通常ボタン（抽選など） */
     button:active {
       transform: translateY(2px) scale(0.98);
       box-shadow: 0 2px 0 #5b21b6;
-      transition: 0.05s; /* ← 押した瞬間の気持ちよさUP */
+    }
+    
+    /* 再抽選は弱め */
+    .reroll-btn:active {
+      transform: translateY(1px) scale(0.99);
+      box-shadow: 0 1px 0 #5b21b6;
     }
 
     /* 結果表示 */
